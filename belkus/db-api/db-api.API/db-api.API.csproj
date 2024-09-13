@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>db_api.API</RootNamespace>
+    <UserSecretsId>4ee26566-02b0-45e3-9652-f7bde4b70f2a</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\db-api-DAL\db-api.DAL.csproj" />
+    <ProjectReference Include="..\db-api.Application\db-api.Application.csproj" />
+    <ProjectReference Include="..\db-api.Domain\db-api.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
