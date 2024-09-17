@@ -2,13 +2,13 @@
 {
     public class LandsLands
     {
-        public string Ulid { get; set; }
-        public string Server { get; set; }
-        public string World { get; set; }
+        public string Ulid { get; set; } // PK
+        public string Server { get; set; } // FK to LandsServer
+        public string World { get; set; } // FK to LandsWorld
         public string Type { get; set; }
         public string? Category { get; set; }
         public string Name { get; set; }
-        public string? Nation { get; set; }
+        public string? Nation { get; set; } // Possible FK to another LandsLand.Ulid (not enforced)
         public string Area { get; set; }
         public string Members { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -23,7 +23,8 @@
         public string? Storage { get; set; }
         public short Level { get; set; }
 
-        public LandsServers? ServerNavigation { get; set; }
-        public LandsWorlds? WorldNavigation { get; set; }
+        public LandsServers LandsServer { get; set; }
+        public LandsWorlds LandsWorld { get; set; }
+        public ICollection<LandsPlayers> Players { get; set; }
     }
 }

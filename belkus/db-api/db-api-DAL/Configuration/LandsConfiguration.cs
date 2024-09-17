@@ -11,128 +11,100 @@ namespace db_api_DAL.Configuration
         {
             builder.ToTable("lands_lands");
 
-            builder.HasKey(e => e.Ulid)
-                   .HasName("PRIMARY");
-
-            builder.HasIndex(e => e.Server)
-                   .HasDatabaseName("server");
-
-            builder.HasIndex(e => e.World)
-                   .HasDatabaseName("world");
+            builder.HasKey(e => e.Ulid);
 
             builder.Property(e => e.Ulid)
-                   .HasColumnType("char(26)")
-                   .HasColumnName("ulid")
-                   .IsRequired();
+                .HasColumnName("ulid")
+                .HasMaxLength(26)
+                .IsUnicode(false)
+                .IsRequired();
 
             builder.Property(e => e.Server)
-                   .HasColumnType("varchar(32)")
-                   .HasColumnName("server")
-                   .IsRequired();
+                .HasColumnName("server")
+                .HasMaxLength(32)
+                .IsUnicode(false)
+                .IsRequired();
 
             builder.Property(e => e.World)
-                   .HasColumnType("char(26)")
-                   .HasColumnName("world")
-                   .IsRequired();
+                .HasColumnName("world")
+                .HasMaxLength(26)
+                .IsUnicode(false)
+                .IsRequired();
 
             builder.Property(e => e.Type)
-                   .HasColumnType("tinytext")
-                   .HasColumnName("type")
-                   .IsRequired();
+                .HasColumnName("type")
+                .IsRequired();
 
             builder.Property(e => e.Category)
-                   .HasColumnType("tinytext")
-                   .HasColumnName("category")
-                   .IsRequired(false);
+                .HasColumnName("category");
 
             builder.Property(e => e.Name)
-                   .HasColumnType("tinytext")
-                   .HasColumnName("name")
-                   .IsRequired();
+                .HasColumnName("name")
+                .IsRequired();
 
             builder.Property(e => e.Nation)
-                   .HasColumnType("char(26)")
-                   .HasColumnName("nation")
-                   .IsRequired(false);
+                .HasColumnName("nation")
+                .HasMaxLength(26)
+                .IsUnicode(false);
 
             builder.Property(e => e.Area)
-                   .HasColumnType("mediumtext")
-                   .HasColumnName("area")
-                   .IsRequired();
+                .HasColumnName("area")
+                .IsRequired();
 
             builder.Property(e => e.Members)
-                   .HasColumnType("text")
-                   .HasColumnName("members")
-                   .IsRequired();
+                .HasColumnName("members")
+                .IsRequired();
 
             builder.Property(e => e.CreatedAt)
-                   .HasColumnType("timestamp")
-                   .HasColumnName("created_at")
-                   .IsRequired();
+                .HasColumnName("created_at")
+                .IsRequired();
 
             builder.Property(e => e.Balance)
-                   .HasColumnType("float")
-                   .HasDefaultValue(0)
-                   .HasColumnName("balance")
-                   .IsRequired();
+                .HasColumnName("balance")
+                .HasDefaultValue(0)
+                .IsRequired();
 
             builder.Property(e => e.Title)
-                   .HasColumnType("varchar(300)")
-                   .HasColumnName("title")
-                   .IsRequired(false);
+                .HasColumnName("title")
+                .HasMaxLength(300);
+
             builder.Property(e => e.Spawn)
-                    .HasColumnType("text")
-                    .HasColumnName("spawn")
-                    .IsRequired(false);
+                .HasColumnName("spawn");
 
             builder.Property(e => e.Inbox)
-                   .HasColumnType("text")
-                   .HasColumnName("inbox")
-                   .IsRequired(false);
+                .HasColumnName("inbox");
 
             builder.Property(e => e.Limits)
-                   .HasColumnType("text")
-                   .HasColumnName("limits")
-                   .IsRequired(false);
+                .HasColumnName("limits");
 
             builder.Property(e => e.Shield)
-                   .HasColumnType("bigint(20)")
-                   .HasDefaultValue(0)
-                   .HasColumnName("shield")
-                   .IsRequired();
+                .HasColumnName("shield")
+                .HasDefaultValue(0)
+                .IsRequired();
 
             builder.Property(e => e.Stats)
-                   .HasColumnType("text")
-                   .HasColumnName("stats")
-                   .IsRequired(false);
+                .HasColumnName("stats");
 
             builder.Property(e => e.Icon)
-                   .HasColumnType("text")
-                   .HasColumnName("icon")
-                   .IsRequired(false);
+                .HasColumnName("icon");
 
             builder.Property(e => e.Storage)
-                   .HasColumnType("longtext")
-                   .HasColumnName("storage")
-                   .IsRequired(false);
+                .HasColumnName("storage");
 
             builder.Property(e => e.Level)
-                   .HasColumnType("smallint(6)")
-                   .HasColumnName("level")
-                   .IsRequired();
+                .HasColumnName("level")
+                .IsRequired();
 
-            // Настройка внешних ключей
-            builder.HasOne<LandsServers>()
-                   .WithMany()
-                   .HasForeignKey(e => e.Server)
-                   .HasConstraintName("lands_lands_ibfk_1")
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(e => e.LandsServer)
+                .WithMany(e => e.Lands)
+                .HasForeignKey(e => e.Server)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne<LandsWorlds>()
-                   .WithMany()
-                   .HasForeignKey(e => e.World)
-                   .HasConstraintName("lands_lands_ibfk_2")
-                   .OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(e => e.LandsWorld)
+                .WithMany(e => e.Lands)
+                .HasForeignKey(e => e.World)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 
@@ -142,50 +114,41 @@ namespace db_api_DAL.Configuration
         {
             builder.ToTable("lands_players");
 
-            builder.HasKey(p => p.Uuid);
+            builder.HasKey(e => e.Uuid);
 
-            builder.Property(p => p.Uuid)
-                .HasColumnType("char(36)")
+            builder.Property(e => e.Uuid)
                 .HasColumnName("uuid")
+                .HasMaxLength(36)
+                .IsUnicode(false)
                 .IsRequired();
 
-            builder.Property(p => p.Name)
-                .HasColumnType("varchar(16)")
+            builder.Property(e => e.Name)
                 .HasColumnName("name")
+                .HasMaxLength(16)
+                .IsUnicode(false)
                 .IsRequired();
 
-            builder.Property(p => p.EditLand)
-                .HasColumnType("char(26)")
+            builder.Property(e => e.EditLand)
                 .HasColumnName("edit_land")
-                .HasDefaultValue(null);
+                .HasMaxLength(26)
+                .IsUnicode(false);
 
-            builder.Property(p => p.Invites)
-                .HasColumnType("text")
-                .HasColumnName("invites")
-                .HasDefaultValue(null);
+            builder.Property(e => e.Invites)
+                .HasColumnName("invites");
 
-            builder.Property(p => p.Limits)
-                .HasColumnType("text")
-                .HasColumnName("limits")
-                .HasDefaultValue(null);
+            builder.Property(e => e.Limits)
+                .HasColumnName("limits");
 
-            builder.Property(p => p.Chatmode)
-                .HasColumnType("tinytext")
-                .HasColumnName("chatmode")
-                .HasDefaultValue(null);
+            builder.Property(e => e.Chatmode)
+                .HasColumnName("chatmode");
 
-            builder.Property(p => p.Flags)
-                .HasColumnType("text")
-                .HasColumnName("flags")
-                .HasDefaultValue(null);
+            builder.Property(e => e.Flags)
+                .HasColumnName("flags");
 
-            builder.HasIndex(p => p.EditLand).HasDatabaseName("edit_land");
-
-            builder.HasOne<LandsLands>()
+            builder.HasOne(e => e.EditLandNavigation)
                 .WithMany()
-                .HasForeignKey(p => p.EditLand)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("lands_players_ibfk_1");
+                .HasForeignKey(e => e.EditLand)
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
 
@@ -195,37 +158,41 @@ namespace db_api_DAL.Configuration
             {
                 builder.ToTable("lands_servers");
 
-                builder.HasKey(s => s.Server);
+                builder.HasKey(e => e.Server);
 
-                builder.Property(s => s.Server)
-                    .HasColumnType("varchar(32)")
+                builder.Property(e => e.Server)
                     .HasColumnName("server")
+                    .HasMaxLength(32)
+                    .IsUnicode(false)
                     .IsRequired();
 
-                builder.Property(s => s.LastSeen)
-                    .HasColumnType("timestamp")
+                builder.Property(e => e.LastSeen)
                     .HasColumnName("last_seen")
                     .IsRequired();
 
-                builder.Property(s => s.Version)
-                    .HasColumnType("tinytext")
+                builder.Property(e => e.Version)
                     .HasColumnName("version")
                     .IsRequired();
 
-                builder.Property(s => s.VersionPrev)
-                    .HasColumnType("tinytext")
+                builder.Property(e => e.VersionPrev)
                     .HasColumnName("version_prev")
                     .IsRequired();
 
-                builder.Property(s => s.Timestamps)
-                    .HasColumnType("text")
-                    .HasColumnName("timestamps")
-                    .HasDefaultValue(null);
+                builder.Property(e => e.Timestamps)
+                    .HasColumnName("timestamps");
 
-                builder.Property(s => s.Flags)
-                    .HasColumnType("text")
-                    .HasColumnName("flags")
-                    .HasDefaultValue(null);
+                builder.Property(e => e.Flags)
+                    .HasColumnName("flags");
+
+                builder.HasMany(e => e.Worlds)
+                    .WithOne(e => e.LandsServer)
+                    .HasForeignKey(e => e.Server)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasMany(e => e.Lands)
+                    .WithOne(e => e.LandsServer)
+                    .HasForeignKey(e => e.Server)
+                    .OnDelete(DeleteBehavior.Cascade);
             }
         }
 
@@ -235,45 +202,40 @@ namespace db_api_DAL.Configuration
             {
                 builder.ToTable("lands_worlds");
 
-                builder.HasKey(w => w.Ulid);
+                builder.HasKey(e => e.Ulid);
 
-                builder.Property(w => w.Ulid)
-                    .HasColumnType("char(26)")
+                builder.Property(e => e.Ulid)
                     .HasColumnName("ulid")
+                    .HasMaxLength(26)
+                    .IsUnicode(false)
                     .IsRequired();
 
-                builder.Property(w => w.Server)
-                    .HasColumnType("varchar(32)")
+                builder.Property(e => e.Server)
                     .HasColumnName("server")
+                    .HasMaxLength(32)
+                    .IsUnicode(false)
                     .IsRequired();
 
-                builder.Property(w => w.Name)
-                    .HasColumnType("tinytext")
+                builder.Property(e => e.Name)
                     .HasColumnName("name")
                     .IsRequired();
 
-                builder.Property(w => w.Uid)
-                    .HasColumnType("char(36)")
+                builder.Property(e => e.Uid)
                     .HasColumnName("uid")
+                    .HasMaxLength(36)
+                    .IsUnicode(false)
                     .IsRequired();
 
-                builder.Property(w => w.FlagsRole)
-                    .HasColumnType("text")
-                    .HasColumnName("flags_role")
-                    .HasDefaultValue(null);
+                builder.Property(e => e.FlagsRole)
+                    .HasColumnName("flags_role");
 
-                builder.Property(w => w.FlagsNatural)
-                    .HasColumnType("text")
-                    .HasColumnName("flags_natural")
-                    .HasDefaultValue(null);
+                builder.Property(e => e.FlagsNatural)
+                    .HasColumnName("flags_natural");
 
-                builder.HasIndex(w => w.Server).HasDatabaseName("server");
-
-                builder.HasOne<LandsServers>()
-                    .WithMany()
-                    .HasForeignKey(w => w.Server)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("lands_worlds_ibfk_1");
+                builder.HasOne(e => e.LandsServer)
+                    .WithMany(e => e.Worlds)
+                    .HasForeignKey(e => e.Server)
+                    .OnDelete(DeleteBehavior.Cascade);
             }
         }
 
